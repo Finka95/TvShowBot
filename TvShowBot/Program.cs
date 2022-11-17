@@ -12,7 +12,7 @@ namespace TvShowBot
         public static void Main(string[] args)
         {
             JavaScriptSerializer serializer = new JavaScriptSerializer();
-            string json = File.ReadAllText("config.json");
+            string json = File.ReadAllText("TvShowBot/TvShowBot/config.json");
             _keys = serializer.Deserialize<IDictionary<string,string>>(json);
 
             Start();
