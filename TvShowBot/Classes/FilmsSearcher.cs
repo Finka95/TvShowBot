@@ -3,29 +3,51 @@ using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using Telegram.Bot.Requests.Abstractions;
+using System.IO.Pipes;
+using System.Data;
 
 namespace TvShowBot.Classes
 {
     public class FilmsSearcher
     {
         private HttpClient httpClient { get; set; }
-        private readonly string xApiKey = "8e7e7949-2fb0-473a-b8a0-cc1e460b0ca0";
+        private IDictionary<string, string> _keys;
 
         public FilmsSearcher()
         {
             httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.Add("X-API-KEY", xApiKey);
+            _keys = Program.GetKeys();
+            string api_token;
+            if(!_keys.TryGetValue("api_token",out api_token))
+            {
+                Console.WriteLine("Can't find api_token");
+                Environment.Exit(1);
+            }    
+            httpClient.DefaultRequestHeaders.Add("X-API-KEY", api_token);
         }
 
         public async Task<string> GetFilmAsync(string filmName)
         {
-            JObject joResponse = await GetJsonAsString($"https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword={filmName}");
+            string search_by_keyboard_path;
+            if (!_keys.TryGetValue("search_by_keyboard_path", out search_by_keyboard_path))
+            {
+                Console.WriteLine("Can't find search_by_keyboard_path");
+                Environment.Exit(2);
+            }
 
+            search_by_keyboard_path += filmName;
+            JObject joResponse = await GetJsonAsString(search_by_keyboard_path);
             var filmId = joResponse.SelectToken("$.films.[0].filmId").ToString();
 
-            joResponse = await GetJsonAsString($"https://kinopoiskapiunofficial.tech/api/v2.2/films/{filmId}");
-
+            string search_by_id;
+            if (!_keys.TryGetValue("search_by_id", out search_by_id))
+            {
+                Console.WriteLine("Can't find search_by_id");
+                Environment.Exit(3);
+            }
+            search_by_id += filmId;
+            joResponse = await GetJsonAsString(search_by_id);
             StringBuilder sb = new StringBuilder()
                 .Append("<b>")
                 .Append(joResponse.SelectToken("$.nameRu").ToString())

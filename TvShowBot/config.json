@@ -1,0 +1,6 @@
+{
+    "bot_token": "",
+    "api_token": "",
+    "search_by_keyboard_path": "https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=",
+    "search_by_id": "https://kinopoiskapiunofficial.tech/api/v2.2/films/"
+}
