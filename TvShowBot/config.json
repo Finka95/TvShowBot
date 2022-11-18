@@ -1,6 +1,6 @@
 {
-  "bot_token": "5752824603:AAGazbrs8bSWeRmwOlQoKM-AY_gsN52R_So",
-  "api_token": "8e7e7949-2fb0-473a-b8a0-cc1e460b0ca0",
+  "bot_token": "",
+  "api_token": "",
   "search_by_keyboard_path": "https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=",
   "search_by_id": "https://kinopoiskapiunofficial.tech/api/v2.2/films/"
 }
